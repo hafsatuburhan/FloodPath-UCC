@@ -1,0 +1,209 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#101f35">
+  <title>FloodPath UCC | Campus Route Lab</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-icon">F</div>
+        <div>
+          <h2>FloodPath UCC</h2>
+          <p>CAMPUS ROUTE LAB</p>
+        </div>
+      </div>
+
+      <p class="side-heading">WORKSPACE</p>
+      <a class="nav-link active" href="#dashboard">▦ Dashboard</a>
+      <a class="nav-link" href="#campus-map">⌖ Campus map</a>
+      <a class="nav-link" href="#stack-panel">▤ Stack explorer</a>
+      <a class="nav-link" href="#activity-panel">☷ Activity log</a>
+
+      <div class="sidebar-card">
+        <span class="live-dot"></span>
+        <strong>Simulation mode</strong>
+        <p>Explore routes around simulated flood areas.</p>
+      </div>
+
+      <div class="sidebar-bottom">
+        <p class="side-heading">DATA STRUCTURES PROJECT</p>
+        <h3>Depth-First Search</h3>
+        <p>Stack principle: Last In, First Out (LIFO)</p>
+      </div>
+    </aside>
+
+    <main class="main-content" id="dashboard">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">CAMPUS EMERGENCY ROUTE SIMULATION</p>
+          <h1>FloodPath <span>Route Lab</span></h1>
+          <p class="subtitle">Explore paths, simulate flood blocks, and observe how a stack helps search for a route.</p>
+        </div>
+        <div class="demo-badge"><span class="live-dot"></span> DEMO ENVIRONMENT</div>
+      </header>
+
+      <section class="stats-grid">
+        <article class="stat-card">
+          <p>MAP SIZE</p>
+          <h2>8 × 8</h2>
+          <span>64 interactive tiles</span>
+        </article>
+        <article class="stat-card">
+          <p>FLOOD BLOCKS</p>
+          <h2 id="floodCount">0</h2>
+          <span>Blocked simulation tiles</span>
+        </article>
+        <article class="stat-card">
+          <p>ROUTE STATUS</p>
+          <h2 id="routeStatus">Not tested</h2>
+          <span id="routeSubtext">Choose locations to begin</span>
+        </article>
+        <article class="stat-card">
+          <p>ROUTE LENGTH</p>
+          <h2 id="routeLength">—</h2>
+          <span>Tiles in discovered route</span>
+        </article>
+      </section>
+
+      <section class="workspace">
+        <section class="panel map-panel" id="campus-map">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">INTERACTIVE GRID</p>
+              <h2>Campus route map</h2>
+            </div>
+            <span class="tag">8 × 8 GRID</span>
+          </div>
+
+          <p class="help-text">
+            Tap any tile to inspect it. Choose “Edit flood areas” to block or unblock ordinary path tiles.
+          </p>
+
+          <div class="toolbar">
+            <button class="mode-button selected" id="inspectModeBtn" type="button">Inspect tiles</button>
+            <button class="mode-button" id="editModeBtn" type="button">Edit flood areas</button>
+          </div>
+
+          <div class="map-grid" id="mapGrid" aria-label="Interactive simulated campus map"></div>
+
+          <div class="tile-info" id="tileInfo" aria-live="polite">
+            <strong>Map tile information</strong>
+            <p>Tap a tile to see its full name and status.</p>
+          </div>
+
+          <div class="map-legend">
+            <p class="legend-heading">MAP KEY</p>
+            <div class="legend-item"><i class="legend-swatch landmark-swatch"></i> Landmark</div>
+            <div class="legend-item"><i class="legend-swatch path-swatch"></i> Normal path</div>
+            <div class="legend-item"><i class="legend-swatch flood-swatch"></i> Simulated flood</div>
+            <div class="legend-item"><i class="legend-swatch route-swatch"></i> Discovered route</div>
+            <div class="legend-item"><i class="legend-swatch start-swatch"></i> Start point</div>
+            <div class="legend-item"><i class="legend-swatch end-swatch"></i> Destination</div>
+          </div>
+
+          <div class="map-warning">
+            <strong>Simulation notice:</strong> This is an illustrative grid for a data structures assignment. It is not an official UCC map or a live flood-warning system.
+          </div>
+        </section>
+
+        <div class="right-column">
+          <section class="panel controls-panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">ROUTE PLANNER</p>
+                <h2>Find a route</h2>
+              </div>
+              <span class="gear">⚙</span>
+            </div>
+
+            <label for="startSelect">Starting location</label>
+            <select id="startSelect">
+              <option value="GATE">UCC Main Gate</option>
+              <option value="LIB">UCC Library</option>
+              <option value="SCI">Science Area</option>
+              <option value="ADM">Administration</option>
+              <option value="QUAD">Central Quad</option>
+              <option value="CAF">Cafeteria</option>
+              <option value="SPT">Sports Field</option>
+              <option value="RES">Student Residence</option>
+              <option value="AMA">Amamoma</option>
+              <option value="AYE">Ayensu</option>
+            </select>
+
+            <label for="endSelect">Destination</label>
+            <select id="endSelect">
+              <option value="AYE">Ayensu</option>
+              <option value="AMA">Amamoma</option>
+              <option value="LIB">UCC Library</option>
+              <option value="SCI">Science Area</option>
+              <option value="ADM">Administration</option>
+              <option value="QUAD">Central Quad</option>
+              <option value="CAF">Cafeteria</option>
+              <option value="SPT">Sports Field</option>
+              <option value="RES">Student Residence</option>
+              <option value="GATE">UCC Main Gate</option>
+            </select>
+
+            <button class="primary-button" id="findRouteBtn" type="button">Find route using DFS</button>
+            <button class="secondary-button" id="clearRouteBtn" type="button">Clear discovered route</button>
+            <button class="text-button" id="resetFloodsBtn" type="button">Reset all flood blocks</button>
+
+            <p class="small-note">
+              DFS explores one path at a time using a stack. If it reaches a dead end, it backtracks and tries another path.
+            </p>
+          </section>
+
+          <section class="panel stack-panel" id="stack-panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">DATA STRUCTURE VISUALIZER</p>
+                <h2>DFS stack</h2>
+              </div>
+              <span class="tag">LIFO</span>
+            </div>
+
+            <p class="help-text">The latest tile added is at the top of the stack.</p>
+            <p class="stack-label">TOP OF STACK ↓</p>
+            <div class="stack-display" id="stackDisplay">
+              <div class="empty-stack">Run DFS to see stack activity here.</div>
+            </div>
+            <p class="stack-bottom-label">BOTTOM OF STACK</p>
+
+            <div class="stack-stats">
+              <div>Pushes<strong id="pushCount">0</strong></div>
+              <div>Pops<strong id="popCount">0</strong></div>
+              <div>Visited<strong id="visitedCount">0</strong></div>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <section class="panel activity-panel" id="activity-panel">
+        <div class="panel-heading">
+          <div>
+            <p class="eyebrow">ALGORITHM ACTIVITY</p>
+            <h2>Exploration log</h2>
+          </div>
+          <button class="small-button" id="clearLogBtn" type="button">Clear log</button>
+        </div>
+        <div class="activity-log" id="activityLog">
+          <p class="log-empty">Ready. Choose locations and find a route to begin.</p>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <span>FloodPath UCC · Campus Route Lab</span>
+        <span>Educational demonstration of stacks and DFS</span>
+      </footer>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
