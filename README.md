@@ -6,13 +6,9 @@ FloodPath UCC is an interactive web application that demonstrates how the stack 
 
 The project applies fundamental data structure and algorithm concepts to a campus-inspired navigation scenario.
 
----
+## 🚀 Live Demo
 
-🚀 Live Demo
-
-Live Application: "Open FloodPath UCC" (PASTE-YOUR-LIVE-APP-LINK-HERE)
-
-«Note: Replace "PASTE-YOUR-LIVE-APP-LINK-HERE" with the actual GitHub Pages URL after deployment.»
+**Live Application:** [Open FloodPath UCC](https://hafsatuburhan.github.io/FloodPath-UCC/)
 
 ---
 
